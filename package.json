@@ -1,0 +1,24 @@
+{
+  "name": "vite-unocss-elm",
+  "author": "Joaquín Sánchez",
+  "description": "A staring template for building Elm apps with Vite + UnoCSS",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "elm-tooling install",
+    "dev": "vite",
+    "prebuild": "elm-tooling install",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test": "elm-test-rs"
+  },
+  "devDependencies": {
+    "@iconify-json/logos": "^1.0.4",
+    "@unocss/preset-icons": "^0.21.0",
+    "@unocss/preset-uno": "^0.21.0",
+    "elm-tooling": "^1.7.0",
+    "unocss": "^0.21.0",
+    "vite": "^2.7.10",
+    "vite-plugin-elm": "^2.5.1"
+  }
+}
