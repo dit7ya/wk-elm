@@ -3,9 +3,12 @@ module Main exposing (main)
 -- import HelloWorld exposing (helloWorld)
 
 import Browser
+import Browser.Events exposing (onKeyDown)
 import Html exposing (Html, a, button, code, div, h1, header, p, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (..)
+import Json.Decode
+import Keyboard.Event exposing (decodeKeyboardEvent)
 import Msg exposing (Msg(..))
 import RouteView exposing (routeView)
 import Settings exposing (Entry, Key, getNode, rootEntry, stepDown)
@@ -19,31 +22,44 @@ main =
 
         -- Debug.log "dump " (stepDown rootEntry "n")
     in
-    Browser.sandbox { init = initialModel, update = update, view = view }
+    Browser.element { init = initialModel, update = update, view = view, subscriptions = subscriptions }
 
 
-initialModel : Entry
-initialModel =
-    rootEntry
+initialModel : () -> ( Entry, Cmd Msg )
+initialModel _ =
+    ( rootEntry, Cmd.none )
 
 
-update : Msg -> Entry -> Entry
-update (KeyPressed key) model =
-    case getNode model (List.singleton key) of
-        Just someEntry ->
-            someEntry
+subscriptions : Entry -> Sub Msg
+subscriptions _ =
+    onKeyDown (Json.Decode.map HandleKeyboardEvent decodeKeyboardEvent)
+
+
+update : Msg -> Entry -> ( Entry, Cmd Msg )
+update (HandleKeyboardEvent keyboardEvent) model =
+    case keyboardEvent.key of
+        -- case getNode model (List.singleton key) of
+        Just someKey ->
+            if someKey == "Escape" then
+                ( rootEntry, Cmd.none )
+
+            else
+                case getNode model (List.singleton someKey) of
+                    Just someEntry ->
+                        ( someEntry, Cmd.none )
+
+                    Nothing ->
+                        ( model, Cmd.none )
 
         Nothing ->
-            model
+            ( model, Cmd.none )
 
 
 view : Entry -> Html Msg
 view model =
     div [ class "text-center" ]
         [ header [ class "bg-white min-h-100vh flex flex-col items-center justify-center" ]
-            [ div [ class "logo" ] []
-            , routeView model
-            ]
+            [ routeView model ]
         ]
 
 

@@ -70,6 +70,22 @@ rootEntry =
                         }
                     ]
                 }
+            , RouteEntry
+                { description = "Control Brightness"
+                , key = "b"
+                , children =
+                    [ CommandEntry
+                        { command = "light -A 1"
+                        , key = "i"
+                        , description = "Increase by 1%"
+                        }
+                    , CommandEntry
+                        { command = "light -U 1"
+                        , key = "d"
+                        , description = "Decrease by 1%"
+                        }
+                    ]
+                }
             ]
         }
 

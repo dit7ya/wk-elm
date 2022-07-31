@@ -17,6 +17,7 @@
   }:
     utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
+      naersk-lib = pkgs.callPackage naersk {};
     in {
       devShell = with pkgs;
         mkShell {
@@ -24,6 +25,22 @@
             elmPackages.elm
             elmPackages.elm-format
             elmPackages.elm-language-server
+
+            # For Tauri
+            pkgconfig
+            openssl
+            sass
+            glib
+            cairo
+            pango
+            atk
+            gdk-pixbuf
+            libsoup
+            gtk3
+            dbus
+            webkitgtk
+            librsvg
+            patchelf
           ];
         };
     });

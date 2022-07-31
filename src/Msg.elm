@@ -1,7 +1,8 @@
 module Msg exposing (Msg(..))
 
+import Keyboard.Event exposing (KeyboardEvent)
 import Settings exposing (Key)
 
 
 type Msg
-    = KeyPressed Key
+    = HandleKeyboardEvent KeyboardEvent
