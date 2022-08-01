@@ -10,6 +10,7 @@ import Html.Events exposing (..)
 import Json.Decode
 import Keyboard.Event exposing (decodeKeyboardEvent)
 import Msg exposing (Msg(..))
+import Ports exposing (addMessage, runShellCommand)
 import RouteView exposing (routeView)
 import Settings exposing (Entry, Key, getNode, rootEntry, stepDown)
 
@@ -32,26 +33,34 @@ initialModel _ =
 
 subscriptions : Entry -> Sub Msg
 subscriptions _ =
-    onKeyDown (Json.Decode.map HandleKeyboardEvent decodeKeyboardEvent)
+    Sub.batch
+        [ onKeyDown (Json.Decode.map HandleKeyboardEvent decodeKeyboardEvent)
+        , addMessage GetMessage
+        ]
 
 
 update : Msg -> Entry -> ( Entry, Cmd Msg )
-update (HandleKeyboardEvent keyboardEvent) model =
-    case keyboardEvent.key of
-        -- case getNode model (List.singleton key) of
-        Just someKey ->
-            if someKey == "Escape" then
-                ( rootEntry, Cmd.none )
+update msg model =
+    case msg of
+        HandleKeyboardEvent keyboardEvent ->
+            case keyboardEvent.key of
+                -- case getNode model (List.singleton key) of
+                Just someKey ->
+                    if someKey == "Escape" then
+                        ( rootEntry, Cmd.none )
 
-            else
-                case getNode model (List.singleton someKey) of
-                    Just someEntry ->
-                        ( someEntry, Cmd.none )
+                    else
+                        case getNode model (List.singleton someKey) of
+                            Just someEntry ->
+                                ( someEntry, runShellCommand { program = "notify-send", args = [ "hello world" ] } )
 
-                    Nothing ->
-                        ( model, Cmd.none )
+                            Nothing ->
+                                ( model, Cmd.none )
 
-        Nothing ->
+                Nothing ->
+                    ( model, Cmd.none )
+
+        GetMessage _ ->
             ( model, Cmd.none )
 
 

@@ -22,5 +22,8 @@
     "unocss": "^0.21.2",
     "vite": "^2.9.14",
     "vite-plugin-elm": "^2.6.1"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.0.2"
   }
 }

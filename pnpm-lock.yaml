@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@iconify-json/logos': ^1.1.13
+  '@tauri-apps/api': ^1.0.2
   '@unocss/preset-icons': ^0.21.2
   '@unocss/preset-uno': ^0.21.2
   '@unocss/reset': ^0.45.1
@@ -10,6 +11,9 @@ specifiers:
   unocss: ^0.21.2
   vite: ^2.9.14
   vite-plugin-elm: ^2.6.1
+
+dependencies:
+  '@tauri-apps/api': 1.0.2
 
 devDependencies:
   '@iconify-json/logos': 1.1.13
@@ -108,6 +112,11 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
+
+  /@tauri-apps/api/1.0.2:
+    resolution: {integrity: sha512-yuNW0oeJ1/ZA7wNF1KgxhHrSu5viPVzY/UgUczzN5ptLM8dH15Juy5rEGkoHfeXGju90Y/l22hi3BtIrp/za+w==}
+    engines: {node: '>= 12.22.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
 
   /@types/cacheable-request/6.0.2:
     resolution: {integrity: sha512-B3xVo+dlKM6nnKTcmm5ZtY/OL8bOAOd2Olee9M1zft65ox50OzjEHW91sDiU9j6cvW8Ejg1/Qkf4xd2kugApUA==}

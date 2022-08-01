@@ -6,3 +6,4 @@ import Settings exposing (Key)
 
 type Msg
     = HandleKeyboardEvent KeyboardEvent
+    | GetMessage String
