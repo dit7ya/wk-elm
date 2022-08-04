@@ -2,6 +2,7 @@ import { Elm } from "./src/Main.elm";
 
 import { invoke } from "@tauri-apps/api";
 
+import { appWindow } from "@tauri-apps/api/window";
 import { Command } from "@tauri-apps/api/shell";
 
 import "./style.css";
@@ -15,9 +16,11 @@ const app = Elm.Main.init({ node: root });
 //   invoke(f.name, f.args).then((res) => app.ports?.addMessage.send(res));
 // });
 
-app.ports?.runShellCommand.subscribe(function (shellCommand) {
-  console.log("yo");
+app.ports?.runShellCommand.subscribe(async function (shellCommand) {
   let c = new Command(shellCommand.program, shellCommand.args);
-  console.log(c);
+  // console.log(c);
+  //
+  // const somethin = await appWindow.minimize();
+  // console.log(somethin);
   c.execute();
 });

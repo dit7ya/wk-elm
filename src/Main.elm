@@ -17,12 +17,6 @@ import Settings exposing (Entry(..), Key, Property(..), getNode, getProperty, ge
 
 main : Program () Entry Msg
 main =
-    let
-        dummy =
-            Debug.log "dump " (getNode rootEntry [ "n" ])
-
-        -- Debug.log "dump " (stepDown rootEntry "n")
-    in
     Browser.element { init = initialModel, update = update, view = view, subscriptions = subscriptions }
 
 
@@ -113,12 +107,13 @@ view model =
         ]
 
 
-grid : List Key -> Html Msg
-grid keys =
-    let
-        ourNode =
-            getNode rootEntry keys
-    in
-    div []
-        [ h1 [ class "mt-2em animate-bounce-alt animate-2s" ] [ text ("You are on haha page " ++ List.foldl (++) "" keys) ]
-        ]
+
+-- grid : List Key -> Html Msg
+-- grid keys =
+--     let
+--         ourNode =
+--             getNode rootEntry keys
+--     in
+--     div []
+--         [ h1 [ class "mt-2em animate-bounce-alt animate-2s" ] [ text ("You are on haha page " ++ List.foldl (++) "" keys) ]
+--         ]

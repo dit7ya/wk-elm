@@ -41,6 +41,9 @@
             webkitgtk
             librsvg
             patchelf
+
+
+            lsof
           ];
         };
     });

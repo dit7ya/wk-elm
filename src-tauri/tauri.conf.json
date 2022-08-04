@@ -12,6 +12,12 @@
   "tauri": {
     "allowlist": {
       "all": true,
+
+      "window": {
+        "all": true,
+        "minimize": true,
+        "hide": true
+      },
       "shell": {
         "all": true,
         "execute": true,
