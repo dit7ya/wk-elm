@@ -105,15 +105,3 @@ view model =
         [ header [ class "bg-white min-h-100vh flex flex-col items-center justify-center" ]
             [ routeView model ]
         ]
-
-
-
--- grid : List Key -> Html Msg
--- grid keys =
---     let
---         ourNode =
---             getNode rootEntry keys
---     in
---     div []
---         [ h1 [ class "mt-2em animate-bounce-alt animate-2s" ] [ text ("You are on haha page " ++ List.foldl (++) "" keys) ]
---         ]

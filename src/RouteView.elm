@@ -6,21 +6,21 @@ import Msg exposing (Msg(..))
 import Settings exposing (Entry(..), Property(..), getProperty)
 
 
-makeButton : Entry -> Html Msg
-makeButton entry =
-    button [ class "p-2 m-2 w-48 text-blue-800" ] [ text (getProperty entry Key ++ " " ++ getProperty entry Description) ]
+mkEntry : Entry -> Html Msg
+mkEntry entry =
+    div [ class "p-2 m-2 w-64 rounded flex" ]
+        [ div [ class "bg-gray-200 w-6 rounded mr-2" ] [ text (getProperty entry Key) ]
+        , text (getProperty entry Description)
+        ]
 
 
 routeView : Entry -> Html Msg
 routeView entry =
-    div
-        [ class "border rounded" ]
-        [ p []
-            (case entry of
-                RouteEntry { children } ->
-                    List.map makeButton children
+    div [ class "grid grid-cols-3 m-2" ]
+        (case entry of
+            RouteEntry { children } ->
+                List.map mkEntry children
 
-                CommandEntry _ ->
-                    []
-            )
-        ]
+            CommandEntry _ ->
+                []
+        )

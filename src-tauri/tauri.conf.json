@@ -80,7 +80,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 300,
         "resizable": false,
         "title": "wk",
         "width": 800
