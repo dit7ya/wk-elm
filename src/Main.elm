@@ -12,7 +12,7 @@ import Keyboard.Event exposing (decodeKeyboardEvent)
 import Msg exposing (Msg(..))
 import Ports exposing (addMessage, runShellCommand)
 import RouteView exposing (routeView)
-import Settings exposing (Entry, Key, getNode, rootEntry, stepDown)
+import Settings exposing (Entry(..), Key, Property(..), getNode, getProperty, getShellCommand, rootEntry, stepDown)
 
 
 main : Program () Entry Msg
@@ -39,6 +39,36 @@ subscriptions _ =
         ]
 
 
+{-| Get all command entry children of the current RouteEntry
+-}
+getCommandEntries : Entry -> List Entry
+getCommandEntries entry =
+    case entry of
+        CommandEntry _ ->
+            []
+
+        RouteEntry { children } ->
+            let
+                filteredChild =
+                    List.filter
+                        (\child ->
+                            case child of
+                                RouteEntry _ ->
+                                    False
+
+                                CommandEntry _ ->
+                                    True
+                        )
+                        children
+            in
+            filteredChild
+
+
+isCommandKey : String -> Entry -> Bool
+isCommandKey key model =
+    List.member key (getCommandEntries model |> List.map (\x -> getProperty x Key))
+
+
 update : Msg -> Entry -> ( Entry, Cmd Msg )
 update msg model =
     case msg of
@@ -49,10 +79,18 @@ update msg model =
                     if someKey == "Escape" then
                         ( rootEntry, Cmd.none )
 
+                    else if isCommandKey someKey model then
+                        case getShellCommand model someKey of
+                            Just someCommand ->
+                                ( model, runShellCommand { program = someCommand.program, args = someCommand.args } )
+
+                            Nothing ->
+                                ( model, Cmd.none )
+
                     else
                         case getNode model (List.singleton someKey) of
                             Just someEntry ->
-                                ( someEntry, runShellCommand { program = "notify-send", args = [ "hello world" ] } )
+                                ( someEntry, Cmd.none )
 
                             Nothing ->
                                 ( model, Cmd.none )
@@ -62,6 +100,9 @@ update msg model =
 
         GetMessage _ ->
             ( model, Cmd.none )
+
+        RunShellCommand shellCommand ->
+            ( model, runShellCommand { program = shellCommand.program, args = shellCommand.args } )
 
 
 view : Entry -> Html Msg

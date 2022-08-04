@@ -5,7 +5,9 @@ import Html.Attributes exposing (property)
 
 
 type alias ShellCommand =
-    String
+    { program : String
+    , args : List String
+    }
 
 
 type alias Key =
@@ -28,6 +30,34 @@ type Entry
 type Property
     = Description
     | Key
+
+
+getShellCommand : Entry -> Key -> Maybe ShellCommand
+getShellCommand model keyToFind =
+    case model of
+        RouteEntry { children } ->
+            List.filterMap
+                (\child ->
+                    case child of
+                        CommandEntry { command, key } ->
+                            if key == keyToFind then
+                                Just command
+
+                            else
+                                Nothing
+
+                        _ ->
+                            Nothing
+                )
+                children
+                |> List.head
+
+        CommandEntry { command } ->
+            Nothing
+
+
+
+--TODO fix this
 
 
 getProperty : Entry -> Property -> String
@@ -59,12 +89,12 @@ rootEntry =
                 , key = "n"
                 , children =
                     [ CommandEntry
-                        { command = "notify-send Hello World"
+                        { command = { program = "notify-send", args = [ "hello world" ] }
                         , key = "h"
                         , description = "Say hello world."
                         }
                     , CommandEntry
-                        { command = "notify-send Cool, isn't it? "
+                        { command = { program = "notify-send", args = [ "Cool thing" ] }
                         , key = "c"
                         , description = "Say something cool."
                         }
@@ -75,14 +105,24 @@ rootEntry =
                 , key = "b"
                 , children =
                     [ CommandEntry
-                        { command = "light -A 1"
+                        { command = { program = "light", args = [ "-A", "1" ] }
                         , key = "i"
                         , description = "Increase by 1%"
                         }
                     , CommandEntry
-                        { command = "light -U 1"
+                        { command = { program = "light", args = [ "-U", "1" ] }
                         , key = "d"
                         , description = "Decrease by 1%"
+                        }
+                    , CommandEntry
+                        { command = { program = "light", args = [ "-A", "5" ] }
+                        , key = "a"
+                        , description = "Increase by 5%"
+                        }
+                    , CommandEntry
+                        { command = { program = "light", args = [ "-U", "5" ] }
+                        , key = "b"
+                        , description = "Decrease by 5%"
                         }
                     ]
                 }
